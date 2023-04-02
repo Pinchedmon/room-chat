@@ -11,12 +11,16 @@ const express = require('express'),
     io = new Server(server, {
         cors: "localhost:3000",
         serveClient: true
-    });
-
+    }),
+    messageRouter = require('./Routes/messageRouter'),
+    roomsRouter = require('./Routes/roomsRouter');
 app.set('view engine', 'ejs');
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({}))
+
+app.use('/message', messageRouter)
+app.use('/rooms', roomsRouter)
 
 let numUsers = 0;
 io.on('connection', (socket) => {
