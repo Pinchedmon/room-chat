@@ -7,7 +7,6 @@ class messageController {
     async getMessages(req, res) {
         const queryObject = url.parse(req.url, true).query;
         db.all(`SELECT * FROM messages WHERE id = ${queryObject.id}`, [], (err, rows) => {
-            console.log(rows)
             return res.json({ data: rows, status: 200 })
         })
     }

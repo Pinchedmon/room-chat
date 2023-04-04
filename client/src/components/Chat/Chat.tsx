@@ -1,34 +1,30 @@
 import React, { useEffect, useState } from "react";
 import Rooms from "./Rooms/Rooms";
 import s from "./chat.module.scss";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import { useQuery } from "react-query";
 
+import { useChat } from "../../hooks/useChat";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+// import { useQuery } from "react-query";
 interface Imessage {
-  id: number;
+  id?: number;
   username: string;
   text: string;
 }
 function Chat() {
-  const location = useLocation();
-  const [messages, setMessages] = useState<Array<Imessage>>([]);
-  const checkMessages = async () => {
-    await axios
-      .get(
-        `http://localhost:6060/message/getMessages?id="${location.pathname.match(
-          "[0-9]"
-        )}"`
-      )
-      .then((res) => {
-        setMessages(res.data.data);
-      });
-  };
-  // const { refetch } = useQuery("messages", () => );
-
+  const navigate = useNavigate();
   useEffect(() => {
-    checkMessages();
-  }, [location.pathname]);
+    navigate("/1");
+  }, []);
+
+  const dispatch = useDispatch();
+  // dispatch()
+  const location = useLocation();
+  // const id = location.pathname.match("[0-9]") as any;
+  // console.log(id[0]);
+  const { messages, sendMessage } = useChat();
+  const [value, setValue] = useState("");
+
   return (
     <div className={s.chat}>
       <Rooms refetch={() => 1} />
@@ -40,7 +36,13 @@ function Chat() {
             </div>
           ))}
         <div>
-          <input type="text" />
+          <textarea
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+          ></textarea>
+          <button onClick={() => sendMessage(value)}>Отправить</button>
         </div>
       </div>
     </div>

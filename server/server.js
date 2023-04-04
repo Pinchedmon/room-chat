@@ -22,32 +22,46 @@ app.use(cors({}))
 app.use('/message', messageRouter)
 app.use('/rooms', roomsRouter)
 
-let numUsers = 0;
+
+let rooms = {
+    1: [],
+    2: [],
+    3: [],
+}
 io.on('connection', (socket) => {
     let addedUser = false;
+    socket.on('connect to room', (roomId, username) => {
+        socket.leave(1)
+        socket.leave(2)
+        socket.leave(3);
+        socket.join(roomId)
+        rooms[roomId].push(username);
+        io.to(`${socket.id}`).emit('connected to room', { message: "Вы подключены успешно" })
+    })
     socket.on('new message', (data) => {
-        db.all(`INSERT INTO messages (id, name, message) VALUES (?, ?, ?)`, [data.id, data.name, data.message], (err) => {
+        db.all(`INSERT INTO messages (id, username, text) VALUES (?, ?, ?)`, [`${data.roomId}`, data.username, data.text], (err) => {
             if (err) {
                 console.error(err);
             } else {
-                socket.broadcast.emit('new message', {
+                io.to(data.roomId).emit('new message', {
                     username: socket.username,
-                    message: data
+                    message: { id: data.id, text: data.text, username: data.username }
                 });
             }
         });
     });
-    socket.on('add user', (username) => {
+    socket.on('add user', (data) => {
+        const { username, roomId } = data
         if (addedUser) return;
         socket.username = username;
-        ++numUsers;
+
         addedUser = true;
-        socket.emit('login', {
-            numUsers: numUsers
+        io.to(`${socket.id}`).emit('login', {
+            numUsers: rooms[roomId].length
         });
-        socket.broadcast.emit('user joined', {
+        socket.broadcast.in(roomId).emit('user joined', {
             username: socket.username,
-            numUsers: numUsers
+            numUsers: rooms[roomId].length
         });
     });
     socket.on('typing', () => {
@@ -61,11 +75,11 @@ io.on('connection', (socket) => {
         });
     });
     socket.on('disconnect', () => {
+
         if (addedUser) {
-            --numUsers;
             socket.broadcast.emit('user left', {
                 username: socket.username,
-                numUsers: numUsers
+                numUsers: 0
             });
         }
     });
