@@ -30,14 +30,48 @@ let rooms = {
 }
 io.on('connection', (socket) => {
     let addedUser = false;
-    socket.on('connect to room', (roomId, username) => {
+    socket.on('connect to room', (data) => {
+        addedUser = false
+        const { username, roomId } = data
+
         socket.leave(1)
         socket.leave(2)
         socket.leave(3);
+        if (socket.roomId !== roomId) {
+            socket.broadcast.in(socket.roomId).emit('user left', {
+                username: socket.username,
+            });
+
+            for (let i = 1; i <= 3; i++) {
+                let x = rooms[i].indexOf(socket.username);
+                if (x >= 0) {
+                    rooms[i].splice(x, 1);
+                }
+            }
+
+        }
+        socket.username = username
+        socket.roomId = roomId
+
         socket.join(roomId)
-        rooms[roomId].push(username);
+
+        if (!addedUser) rooms[roomId].push(username);
+        addedUser = true;
+        io.to(`${socket.id}`).emit('login', {
+            numUsers: rooms[roomId].length
+        });
+        socket.broadcast.in(roomId).emit('user joined', {
+            username: socket.username,
+            numUsers: rooms[roomId].length
+        });
         io.to(`${socket.id}`).emit('connected to room', { message: "Вы подключены успешно" })
     })
+    // socket.on('leave room', (data) => {
+    //     const { username, roomId } = data
+    //     socket.broadcast.in(roomId).emit('user left', {
+    //         username: socket.username,
+    //     });
+    // })
     socket.on('new message', (data) => {
         db.all(`INSERT INTO messages (id, username, text) VALUES (?, ?, ?)`, [`${data.roomId}`, data.username, data.text], (err) => {
             if (err) {
@@ -50,20 +84,7 @@ io.on('connection', (socket) => {
             }
         });
     });
-    socket.on('add user', (data) => {
-        const { username, roomId } = data
-        if (addedUser) return;
-        socket.username = username;
 
-        addedUser = true;
-        io.to(`${socket.id}`).emit('login', {
-            numUsers: rooms[roomId].length
-        });
-        socket.broadcast.in(roomId).emit('user joined', {
-            username: socket.username,
-            numUsers: rooms[roomId].length
-        });
-    });
     socket.on('typing', () => {
         socket.broadcast.emit('typing', {
             username: socket.username
@@ -75,13 +96,18 @@ io.on('connection', (socket) => {
         });
     });
     socket.on('disconnect', () => {
-
+        for (let i = 1; i <= 3; i++) {
+            let x = rooms[i].indexOf(socket.username);
+            if (x >= 0) {
+                rooms[i].splice(x, 1);
+            }
+        }
         if (addedUser) {
             socket.broadcast.emit('user left', {
                 username: socket.username,
-                numUsers: 0
             });
         }
     });
 });
+
 server.listen(port)

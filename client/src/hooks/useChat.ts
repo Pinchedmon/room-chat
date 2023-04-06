@@ -24,13 +24,15 @@ export const useChat = () => {
   if (!username) {
     navigate("/login");
   }
+
   useEffect(() => {
     setMessages([]);
+    console.log(roomId);
     checkMessages();
   }, [location.pathname]);
   useEffect(() => {
     socketRef.current = io(SERVER_URL) as any;
-    socketRef.current.emit("add user", { username, roomId });
+
     socketRef.current.on("user joined", (data: any) => {
       setMessages((prev) => [
         ...prev,
@@ -63,7 +65,6 @@ export const useChat = () => {
       setMessages((prev) => [
         ...prev,
         { username: "отключение", text: data.username },
-        { username: "количество участников", text: data.numUsers },
       ]);
     });
   }, []);
@@ -75,15 +76,17 @@ export const useChat = () => {
       roomId: roomId,
     });
   };
-
+  const leaveRoom = (roomId: number) => {
+    socketRef.current.emit("leave room", roomId);
+  };
   const checkMessages = async () => {
     await axios
       .get(`http://localhost:6060/message/getMessages?id="${roomId}"`)
       .then((res) => {
         setMessages(res.data.data);
       });
-    socketRef.current.emit("connect to room", roomId);
+    socketRef.current.emit("connect to room", { roomId, username });
   };
 
-  return { messages, sendMessage, checkMessages };
+  return { messages, sendMessage, checkMessages, leaveRoom };
 };
