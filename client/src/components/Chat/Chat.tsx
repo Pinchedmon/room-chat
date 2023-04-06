@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Rooms from "./Rooms/Rooms";
 import s from "./chat.module.scss";
-
 import { useChat } from "../../hooks/useChat";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,15 +15,9 @@ function Chat() {
   useEffect(() => {
     navigate("/1");
   }, []);
-
-  const dispatch = useDispatch();
-  // dispatch()
-  const location = useLocation();
-  // const id = location.pathname.match("[0-9]") as any;
-  // console.log(id[0]);
-  const { messages, sendMessage } = useChat();
+  const { messages, sendMessage, typingFalse, typingTrue, typingUsers } =
+    useChat();
   const [value, setValue] = useState("");
-
   return (
     <div className={s.chat}>
       <Rooms refetch={() => 1} />
@@ -35,9 +28,18 @@ function Chat() {
               {message.username}: {message.text}
             </div>
           ))}
+        {typingUsers.length > 0 && (
+          <div>
+            {typingUsers.length > 1
+              ? `${typingUsers.length} печатают`
+              : `${typingUsers[0]} печатает`}
+          </div>
+        )}
         <div>
           <textarea
             value={value}
+            onBlur={typingFalse}
+            onFocus={typingTrue}
             onChange={(e) => {
               setValue(e.target.value);
             }}

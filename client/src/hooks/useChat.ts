@@ -19,6 +19,7 @@ export const useChat = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const socketRef = useRef<any>(null);
+  const [typingUsers, setTypingUsers] = useState<Array<string>>([]);
   const [messages, setMessages] = useState<Array<Imessage>>([]);
   const username = localStorage.getItem("username");
   if (!username) {
@@ -27,7 +28,6 @@ export const useChat = () => {
 
   useEffect(() => {
     setMessages([]);
-    console.log(roomId);
     checkMessages();
   }, [location.pathname]);
   useEffect(() => {
@@ -56,10 +56,12 @@ export const useChat = () => {
       ]);
     });
     socketRef.current.on("typing", (data: any) => {
-      setMessages((prev) => [...prev, data.message]);
+      setTypingUsers((prev) => [...prev, data.username]);
     });
     socketRef.current.on("stop typing", (data: any) => {
-      setMessages((prev) => [...prev, data.message]);
+      setTypingUsers(
+        typingUsers.filter((names: any) => names !== data.username)
+      );
     });
     socketRef.current.on("user left", (data: any) => {
       setMessages((prev) => [
@@ -69,7 +71,7 @@ export const useChat = () => {
     });
   }, []);
 
-  const sendMessage = async (value: string) => {
+  const sendMessage = (value: string) => {
     socketRef.current.emit("new message", {
       username: "pinch",
       text: value,
@@ -87,6 +89,20 @@ export const useChat = () => {
       });
     socketRef.current.emit("connect to room", { roomId, username });
   };
+  const typingTrue = () => {
+    socketRef.current.emit("typing");
+  };
+  const typingFalse = () => {
+    socketRef.current.emit("stop typing");
+  };
 
-  return { messages, sendMessage, checkMessages, leaveRoom };
+  return {
+    messages,
+    sendMessage,
+    checkMessages,
+    leaveRoom,
+    typingTrue,
+    typingFalse,
+    typingUsers,
+  };
 };
