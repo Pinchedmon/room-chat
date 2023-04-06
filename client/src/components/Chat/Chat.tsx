@@ -3,6 +3,7 @@ import Rooms from "./Rooms/Rooms";
 import s from "./chat.module.scss";
 import { useChat } from "../../hooks/useChat";
 import { useNavigate } from "react-router-dom";
+import Message from "./Rooms/Message";
 interface Imessage {
   id?: number;
   username: string;
@@ -19,11 +20,11 @@ function Chat() {
   return (
     <div className={s.chat}>
       <Rooms refetch={() => 1} />
-      <div>
+      <div className={s.chatroom}>
         {messages.length > 0 &&
           messages.map((message: Imessage, index) => (
             <div key={index}>
-              {message.username}: {message.text}
+              <Message data={message} />
             </div>
           ))}
         {typingUsers.length > 0 && (

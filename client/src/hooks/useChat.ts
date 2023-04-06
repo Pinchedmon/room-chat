@@ -67,7 +67,7 @@ export const useChat = () => {
   }, []);
   const sendMessage = (value: string) => {
     socketRef.current.emit("new message", {
-      username: "pinch",
+      username: username,
       text: value,
       roomId: roomId,
     });

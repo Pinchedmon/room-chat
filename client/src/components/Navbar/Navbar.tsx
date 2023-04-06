@@ -4,7 +4,9 @@ import s from "./Navbar.module.scss";
 const Navbar = () => {
   return (
     <div className={s.logobox}>
-      <p className={s.logo}>chat</p>
+      <div className={s.logo}>
+        <p>Chat</p>
+      </div>
     </div>
   );
 };

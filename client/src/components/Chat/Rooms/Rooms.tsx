@@ -20,6 +20,11 @@ const Rooms = (props: { refetch: () => void }) => {
 
   return (
     <div className={s.rooms}>
+      <div className={s.title}>
+        <p>Комнаты</p>
+        <div className={s.rooms__count}>{rooms.length}</div>
+      </div>
+
       {rooms.length > 0 &&
         rooms.map((room: Iroom) => (
           <div key={room.ID}>

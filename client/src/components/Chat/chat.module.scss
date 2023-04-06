@@ -1,3 +1,31 @@
 .chat {
+  width: 100%;
   display: flex;
 }
+.message {
+  width: 200px;
+  margin-left: 12px;
+  padding: 8px 4px 8px 4px;
+  background-color: rgb(233, 233, 233);
+  margin-bottom: 6px;
+  border-radius: 10px;
+  p {
+    margin-left: 4px;
+  }
+}
+.message__your {
+  width: 200px;
+  background-color: purple;
+  color: white;
+  margin-left: auto;
+  padding: 8px 4px 8px 4px;
+  margin-bottom: 6px;
+  border-radius: 10px;
+  p {
+    margin-left: 4px;
+  }
+}
+
+// .chatroom {
+//   width: 100%;
+// }
