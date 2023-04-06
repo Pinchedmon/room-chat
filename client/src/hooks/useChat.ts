@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-// получаем класс IO
 import io from "socket.io-client";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-// наши хуки
 
 const SERVER_URL = "http://localhost:6060";
 interface Imessage {
@@ -12,8 +10,6 @@ interface Imessage {
   username: string;
   text: string;
 }
-
-// хук принимает название комнаты
 export const useChat = () => {
   const roomId = useSelector((state: any) => state.rooms.id);
   const navigate = useNavigate();
@@ -32,7 +28,6 @@ export const useChat = () => {
   }, [location.pathname]);
   useEffect(() => {
     socketRef.current = io(SERVER_URL) as any;
-
     socketRef.current.on("user joined", (data: any) => {
       setMessages((prev) => [
         ...prev,
@@ -70,7 +65,6 @@ export const useChat = () => {
       ]);
     });
   }, []);
-
   const sendMessage = (value: string) => {
     socketRef.current.emit("new message", {
       username: "pinch",
@@ -95,7 +89,6 @@ export const useChat = () => {
   const typingFalse = () => {
     socketRef.current.emit("stop typing");
   };
-
   return {
     messages,
     sendMessage,

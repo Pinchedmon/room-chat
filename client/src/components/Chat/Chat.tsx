@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import Rooms from "./Rooms/Rooms";
 import s from "./chat.module.scss";
 import { useChat } from "../../hooks/useChat";
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-// import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 interface Imessage {
   id?: number;
   username: string;
