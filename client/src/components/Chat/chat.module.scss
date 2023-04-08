@@ -24,8 +24,37 @@
   p {
     margin-left: 4px;
   }
+  margin-right: 10px;
 }
 
-// .chatroom {
-//   width: 100%;
-// }
+.chatroom {
+  width: 60%;
+  height: 100%;
+}
+.chatroom__content::-webkit-scrollbar {
+  display: none;
+}
+.chatroom__send {
+  bottom: 0;
+  height: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    color: purple;
+  }
+}
+.chatroom__send_textarea {
+  width: 100%;
+}
+.chatroom__content {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  height: calc(100% - 50px);
+  overflow: auto;
+  overscroll-behavior-y: contain;
+}

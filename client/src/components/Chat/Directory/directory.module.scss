@@ -1,0 +1,44 @@
+.directory__title {
+  border-bottom: 1px solid rgb(221, 221, 221);
+  align-items: center;
+  display: flex;
+  padding: 26px;
+  font-size: 20px;
+  p {
+    margin-right: 8px;
+    font-weight: bold;
+    color: rgb(59, 59, 59);
+  }
+}
+.directory {
+  width: 20%;
+  border-left: 1px solid rgb(221, 221, 221);
+}
+.directory__count {
+  margin-left: 24px;
+}
+.directory__number {
+  padding: 4px;
+  background-color: whitesmoke;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-left: 6px;
+}
+.directory__count_title {
+  display: flex;
+  font-size: 16px;
+  align-items: center;
+  font-weight: bold;
+  margin-top: 16px;
+  color: rgb(59, 59, 59);
+}
+.directory__count_names {
+  margin-top: 12px;
+  p {
+    margin-top: 8px;
+    color: rgb(59, 59, 59);
+    font-weight: 500;
+    font-size: 14px;
+  }
+}

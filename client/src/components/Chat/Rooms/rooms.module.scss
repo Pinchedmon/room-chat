@@ -1,5 +1,6 @@
 .rooms {
   background-color: white;
+  width: 20%;
   border-left: 1px solid rgb(221, 221, 221);
   border-right: 1px solid rgb(221, 221, 221);
   box-shadow: inset 8px 0px 10px rgb(242, 242, 242);
@@ -7,20 +8,20 @@
 .room__link_active {
   text-decoration: none;
   .room {
-    color: black;
+    color: rgb(59, 59, 59);
     background-color: rgba(128, 0, 128, 0.1);
   }
 }
 .room__link {
-  color: black;
+  color: rgb(59, 59, 59);
   text-decoration: none;
 }
 .room {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   font-size: 0.7rem;
-  justify-content: center;
-  width: 20vw;
+  justify-content: space-between;
+
   height: 50px;
   text-align: left;
   border-radius: 5px;
@@ -29,17 +30,7 @@
   margin-right: 5px;
   margin-left: 5px;
 }
-.room div {
-  margin-left: 12px;
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 6px;
-}
-.room p {
-  color: gray;
-  margin-left: 13px;
-  font-size: 10px;
-}
+
 .title {
   border-bottom: 1px solid rgb(221, 221, 221);
   align-items: center;
@@ -50,6 +41,7 @@
 .title p {
   margin-right: 8px;
   font-weight: bold;
+  color: rgb(59, 59, 59);
 }
 .rooms__count {
   background-color: whitesmoke;
@@ -57,4 +49,30 @@
   border-radius: 10px;
   font-weight: bold;
   font-size: 16px;
+  color: rgb(59, 59, 59);
+}
+.room__content {
+  display: flex;
+  align-items: center;
+
+  justify-content: center;
+  flex-direction: column;
+}
+.room__content div {
+  margin-left: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.room__content p {
+  color: gray;
+  margin-left: 13px;
+  font-size: 10px;
+}
+.room__date {
+  margin-top: 8px;
+  margin-right: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  color: gray;
 }

@@ -18,8 +18,11 @@ const Room = (props: { item: Iroom; refetch: () => void }) => {
       onClick={pickRoom}
     >
       <div className={s.room}>
-        <div>{item.name}</div>
-        <p>Example message</p>
+        <div className={s.room__content}>
+          <div>{item.name}</div>
+          <p>Example message</p>
+        </div>
+        <div className={s.room__date}>date</div>
       </div>
     </Link>
   );
