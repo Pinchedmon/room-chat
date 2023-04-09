@@ -17,7 +17,7 @@ function Chat() {
   useEffect(() => {
     navigate("/1");
   }, []);
-  const { messages, sendMessage, typingFalse, typingTrue, typingUsers } =
+  const { messages, sendMessage, users, typingFalse, typingTrue, typingUsers } =
     useChat();
   const [value, setValue] = useState("");
   return (
@@ -56,7 +56,7 @@ function Chat() {
           <button onClick={() => sendMessage(value)}>Отправить</button>
         </div>
       </div>
-      <Directory />
+      <Directory users={users} />
     </div>
   );
 }

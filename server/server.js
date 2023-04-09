@@ -62,9 +62,10 @@ io.on('connection', (socket) => {
         });
         socket.broadcast.in(roomId).emit('user joined', {
             username: socket.username,
-            numUsers: rooms[roomId].length
+            numUsers: rooms[roomId].length,
+
         });
-        io.to(`${socket.id}`).emit('connected to room', { message: "Вы подключены успешно" })
+        io.to(`${socket.id}`).emit('connected to room', { message: "Вы подключены успешно", users: rooms[roomId] })
     })
     // socket.on('leave room', (data) => {
     //     const { username, roomId } = data

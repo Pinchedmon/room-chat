@@ -17,6 +17,7 @@ export const useChat = () => {
   const socketRef = useRef<any>(null);
   const [typingUsers, setTypingUsers] = useState<Array<string>>([]);
   const [messages, setMessages] = useState<Array<Imessage>>([]);
+  const [users, setUsers] = useState<Array<string>>([]);
   const username = localStorage.getItem("username");
   if (!username) {
     navigate("/login");
@@ -24,11 +25,13 @@ export const useChat = () => {
 
   useEffect(() => {
     setMessages([]);
+
     checkMessages();
   }, [location.pathname]);
   useEffect(() => {
     socketRef.current = io(SERVER_URL) as any;
     socketRef.current.on("user joined", (data: any) => {
+      users.push(data.username);
       setMessages((prev) => [
         ...prev,
         { username: "присоединение", text: data.username },
@@ -40,10 +43,12 @@ export const useChat = () => {
         ...prev,
         { username: "статус", text: data.message },
       ]);
+      setUsers(data.users);
     });
     socketRef.current.on("new message", (data: any) => {
       setMessages((prev) => [...prev, data.message]);
     });
+
     socketRef.current.on("login", (data: any) => {
       setMessages((prev) => [
         ...prev,
@@ -59,6 +64,11 @@ export const useChat = () => {
       );
     });
     socketRef.current.on("user left", (data: any) => {
+      console.log(users, data.username);
+      console.log(data);
+      console.log(users.indexOf(data.username));
+      setUsers(users.splice(users.indexOf(data.username), 1));
+
       setMessages((prev) => [
         ...prev,
         { username: "отключение", text: data.username },
@@ -89,6 +99,7 @@ export const useChat = () => {
   const typingFalse = () => {
     socketRef.current.emit("stop typing");
   };
+
   return {
     messages,
     sendMessage,
@@ -97,5 +108,6 @@ export const useChat = () => {
     typingTrue,
     typingFalse,
     typingUsers,
+    users,
   };
 };
