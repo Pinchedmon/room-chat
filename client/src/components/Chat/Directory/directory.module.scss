@@ -36,9 +36,12 @@
 .directory__count_names {
   margin-top: 12px;
   p {
-    margin-top: 8px;
+    margin-top: 16px;
     color: rgb(59, 59, 59);
     font-weight: 500;
     font-size: 14px;
   }
+}
+.directory__count_name {
+  margin-bottom: 10px;
 }

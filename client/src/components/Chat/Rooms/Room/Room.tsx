@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import type { Iroom } from "../Rooms";
 import { Link } from "react-router-dom";
 import s from "./../rooms.module.scss";
-const Room = (props: { item: Iroom; refetch: () => void }) => {
+import { formatTime } from "../../../../utils/date";
+const Room = (props: { item: Iroom }) => {
   const roomId = useSelector((state: any) => state.rooms.id);
   const { item } = props;
   const dispatch = useDispatch();
@@ -20,9 +21,11 @@ const Room = (props: { item: Iroom; refetch: () => void }) => {
       <div className={s.room}>
         <div className={s.room__content}>
           <div>{item.name}</div>
-          <p>Example message</p>
+          <p>{item.msgText}</p>
         </div>
-        <div className={s.room__date}>date</div>
+        <div className={s.room__date}>
+          {item.msgTime ? formatTime(item.msgTime) : ""}
+        </div>
       </div>
     </Link>
   );

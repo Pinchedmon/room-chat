@@ -5,28 +5,34 @@
 .message {
   width: 200px;
   margin-left: 12px;
-  padding: 8px 4px 8px 4px;
+  padding: 10px 12px 10px 10px;
   background-color: rgb(233, 233, 233);
-  margin-bottom: 6px;
   border-radius: 10px;
-  p {
-    margin-left: 4px;
-  }
 }
 .message__your {
-  width: 200px;
   background-color: purple;
   color: white;
   margin-left: auto;
-  padding: 8px 4px 8px 4px;
-  margin-bottom: 6px;
+  padding: 10px 12px 10px 10px;
   border-radius: 10px;
-  p {
-    margin-left: 4px;
-  }
+  margin-left: 2;
   margin-right: 10px;
 }
-
+.message__wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 16px;
+  margin-right: 16px;
+  span {
+    font-weight: bold;
+  }
+}
+.chatroom__typing {
+  color: gray;
+  margin-left: 8px;
+  margin-top: 8px;
+}
 .chatroom {
   width: 60%;
   height: 100%;
@@ -57,4 +63,8 @@
   height: calc(100% - 50px);
   overflow: auto;
   overscroll-behavior-y: contain;
+}
+.message__status {
+  margin-left: 16px;
+  color: gray;
 }

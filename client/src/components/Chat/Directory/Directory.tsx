@@ -13,7 +13,9 @@ function Directory(props: { users: Array<string> }) {
         </div>
         <div className={s.directory__count_names}>
           {users.map((user: string, index: number) => (
-            <div key={index}>{user}</div>
+            <div className={s.directory__count_name} key={index}>
+              {user}
+            </div>
           ))}
         </div>
       </div>

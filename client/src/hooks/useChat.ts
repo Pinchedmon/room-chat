@@ -9,6 +9,7 @@ interface Imessage {
   id?: number;
   username: string;
   text: string;
+  date?: number;
 }
 export const useChat = () => {
   const roomId = useSelector((state: any) => state.rooms.id);
@@ -25,7 +26,6 @@ export const useChat = () => {
 
   useEffect(() => {
     setMessages([]);
-
     checkMessages();
   }, [location.pathname]);
   useEffect(() => {
@@ -34,14 +34,18 @@ export const useChat = () => {
       users.push(data.username);
       setMessages((prev) => [
         ...prev,
-        { username: "присоединение", text: data.username },
-        { username: "количество участников", text: data.numUsers },
+        { username: "присоединение", text: data.username, date: Date.now() },
+        {
+          username: "количество участников",
+          text: data.numUsers,
+          date: Date.now(),
+        },
       ]);
     });
     socketRef.current.on("connected to room", (data: any) => {
       setMessages((prev) => [
         ...prev,
-        { username: "статус", text: data.message },
+        { username: "статус", text: data.message, date: Date.now() },
       ]);
       setUsers(data.users);
     });
@@ -64,14 +68,10 @@ export const useChat = () => {
       );
     });
     socketRef.current.on("user left", (data: any) => {
-      console.log(users, data.username);
-      console.log(data);
-      console.log(users.indexOf(data.username));
       setUsers(users.splice(users.indexOf(data.username), 1));
-
       setMessages((prev) => [
         ...prev,
-        { username: "отключение", text: data.username },
+        { username: "отключение", text: data.username, date: Date.now() },
       ]);
     });
   }, []);
@@ -80,6 +80,7 @@ export const useChat = () => {
       username: username,
       text: value,
       roomId: roomId,
+      date: Date.now(),
     });
   };
   const leaveRoom = (roomId: number) => {

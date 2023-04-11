@@ -53,8 +53,6 @@
 }
 .room__content {
   display: flex;
-  align-items: center;
-
   justify-content: center;
   flex-direction: column;
 }
@@ -66,7 +64,7 @@
 }
 .room__content p {
   color: gray;
-  margin-left: 13px;
+  margin-left: 12px;
   font-size: 10px;
 }
 .room__date {

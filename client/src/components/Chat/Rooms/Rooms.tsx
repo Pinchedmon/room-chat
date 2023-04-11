@@ -6,8 +6,10 @@ import Room from "./Room/Room";
 export type Iroom = {
   ID: number;
   name: string;
+  msgTime: number;
+  msgText: string;
 };
-const Rooms = (props: { refetch: () => void }) => {
+const Rooms = () => {
   const [rooms, setRooms] = useState<Array<Iroom>>([]);
   const getRooms = async () => {
     await axios.get("http://localhost:6060/rooms/getRooms").then((res) => {
@@ -28,7 +30,7 @@ const Rooms = (props: { refetch: () => void }) => {
       {rooms.length > 0 &&
         rooms.map((room: Iroom) => (
           <div key={room.ID}>
-            <Room refetch={props.refetch} item={room} />
+            <Room item={room} />
           </div>
         ))}
     </div>

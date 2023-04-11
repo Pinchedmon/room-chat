@@ -22,7 +22,7 @@ function Chat() {
   const [value, setValue] = useState("");
   return (
     <div className={s.chat}>
-      <Rooms refetch={() => 1} />
+      <Rooms />
       <div className={s.chatroom}>
         <div className={s.chatroom__content}>
           {messages.length > 0 &&
@@ -32,10 +32,10 @@ function Chat() {
               </div>
             ))}
           {typingUsers.length > 0 && (
-            <div>
+            <div className={s.chatroom__typing}>
               {typingUsers.length > 1
-                ? `${typingUsers.length} печатают`
-                : `${typingUsers[0]} печатает`}
+                ? `${typingUsers.length} печатают...`
+                : `${typingUsers[0]} печатает...`}
             </div>
           )}
         </div>

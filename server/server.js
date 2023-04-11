@@ -67,20 +67,15 @@ io.on('connection', (socket) => {
         });
         io.to(`${socket.id}`).emit('connected to room', { message: "Вы подключены успешно", users: rooms[roomId] })
     })
-    // socket.on('leave room', (data) => {
-    //     const { username, roomId } = data
-    //     socket.broadcast.in(roomId).emit('user left', {
-    //         username: socket.username,
-    //     });
-    // })
+
     socket.on('new message', (data) => {
-        db.all(`INSERT INTO messages (id, username, text) VALUES (?, ?, ?)`, [`${data.roomId}`, data.username, data.text], (err) => {
+        db.all(`INSERT INTO messages (id, username, text, date) VALUES (?, ?, ?, ?)`, [`${data.roomId}`, data.username, data.text, data.date], (err) => {
             if (err) {
                 console.error(err);
             } else {
                 io.to(data.roomId).emit('new message', {
                     username: socket.username,
-                    message: { id: data.id, text: data.text, username: data.username }
+                    message: { id: data.id, text: data.text, username: data.username, date: data.date }
                 });
             }
         });
